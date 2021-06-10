@@ -1,7 +1,7 @@
-import Posts from "@/components/Posts";
+import JobComponent from "@/components/JobComponent";
 
 const Jobs = ({ data }) => {
-  return <Posts data={data} />;
+  return <JobComponent data={data} />;
 };
 
 export const getServerSideProps = async () => {

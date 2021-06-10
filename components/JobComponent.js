@@ -7,7 +7,7 @@ import {
 
 //set the sort types to be used in sorting
 
-const Posts = ({ data }) => {
+const JobComponent = ({ data }) => {
   //the limit of content to be shown on load or every click of the "show more" button
   const jobsPerPage = 10;
 
@@ -33,6 +33,46 @@ const Posts = ({ data }) => {
   useEffect(() => {
     sortData();
   }, [data.jobs]);
+
+  const handleSortingJobs = () => {
+    let nextSort;
+    if (currentSort === "down") nextSort = "up";
+    if (currentSort === "up") nextSort = "default";
+    if (currentSort === "default") nextSort = "down";
+
+    setNextSort(nextSort);
+  };
+
+  //check for any changes in the state then call functions once state changes
+  useEffect(() => {
+    sortData();
+  }, [currentSort]);
+
+  const sortData = () => {
+    const newJobs = [...data.jobs];
+    let sortedJobs;
+    setPageLoading(true);
+    setTimeout(() => {
+      if (currentSort == "default") {
+        sortedJobs = newJobs;
+      } else if (currentSort == "up") {
+        sortedJobs = newJobs.sort((a, b) =>
+          a.companyName > b.companyName ? 1 : -1
+        );
+      } else if (currentSort == "down") {
+        sortedJobs = newJobs.sort((a, b) =>
+          a.companyName < b.companyName ? 1 : -1
+        );
+      }
+      console.log(sortedJobs);
+      setJobs(sortedJobs);
+    }, 1000);
+  };
+
+  //check for any changes in the state then call functions once state changes
+  useEffect(() => {
+    filterJobs();
+  }, [jobs]);
 
   //filter button ticker function to set the ticker to true if the filter is not yet applied then call the filter function
   const handleFilterJobs = () => {
@@ -89,46 +129,6 @@ const Posts = ({ data }) => {
     }, 1500);
   };
 
-  const handleSortingJobs = () => {
-    let nextSort;
-    if (currentSort === "down") nextSort = "up";
-    if (currentSort === "up") nextSort = "default";
-    if (currentSort === "default") nextSort = "down";
-
-    setNextSort(nextSort);
-  };
-
-  //check for any changes in the state then call functions once state changes
-  useEffect(() => {
-    sortData();
-  }, [currentSort]);
-
-  const sortData = () => {
-    const newJobs = [...data.jobs];
-    let sortedJobs;
-    setPageLoading(true);
-    setTimeout(() => {
-      if (currentSort == "default") {
-        sortedJobs = newJobs;
-      } else if (currentSort == "up") {
-        sortedJobs = newJobs.sort((a, b) =>
-          a.companyName > b.companyName ? 1 : -1
-        );
-      } else if (currentSort == "down") {
-        sortedJobs = newJobs.sort((a, b) =>
-          a.companyName < b.companyName ? 1 : -1
-        );
-      }
-      console.log(sortedJobs);
-      setJobs(sortedJobs);
-    }, 1000);
-  };
-
-  //check for any changes in the state then call functions once state changes
-  useEffect(() => {
-    filterJobs();
-  }, [jobs]);
-
   return (
     <div className="mb-10">
       <div className="flex items-center justify-between w-full my-4 pl-4 sm:pr-4">
@@ -163,7 +163,7 @@ const Posts = ({ data }) => {
                 : "text-black border-gray-900 px-5 rounded-md font-semibold py-2 tracking-wider border hover:bg-gray-800 flex flex-wrap items-center"
             }
           >
-            Posted for the last 7 days
+            Filter jobs last 7 days
             {/* bg-gray-900 px-5 py-2 text-sm shadow-sm font-semibold tracking-wider text-white rounded-full hover:bg-gray-800 */}
           </button>
         </div>
@@ -232,4 +232,4 @@ const Posts = ({ data }) => {
   );
 };
 
-export default Posts;
+export default JobComponent;

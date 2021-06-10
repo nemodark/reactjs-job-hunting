@@ -35,7 +35,7 @@ const handler = async (req, res) => {
           status: false,
           data: null,
         });
-        return resolve();
+        return reject(err);
       });
   });
 };
