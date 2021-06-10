@@ -64,7 +64,6 @@ const JobComponent = ({ data }) => {
           a.companyName < b.companyName ? 1 : -1
         );
       }
-      console.log(sortedJobs);
       setJobs(sortedJobs);
     }, 1000);
   };
@@ -106,7 +105,6 @@ const JobComponent = ({ data }) => {
 
   useEffect(() => {
     loopWithSlice(0, jobsPerPage);
-    console.log(filteredJobs);
   }, [filteredJobs]);
 
   //loop the values from the data and slice based on the limit per page to show the corresponding data
@@ -131,7 +129,7 @@ const JobComponent = ({ data }) => {
 
   return (
     <div className="mb-10">
-      <div className="flex items-center justify-between w-full my-4 pl-4 sm:pr-4">
+      <div className="flex md:flex-row flex-col space-y-4 md:space-x-4 md:items-center justify-between w-full my-4 lg:px-4">
         <div className="mr-6">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight leading-7 md:leading-10 mb-1 truncate">
             Jobs
@@ -140,10 +138,10 @@ const JobComponent = ({ data }) => {
             Find the best job for you
           </div>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 md:space-y-0 space-y-4">
           <button
             onClick={handleSortingJobs}
-            className="px-5 rounded-md bg-gray-900 text-white font-semibold py-2 tracking-wider border-gray-900 border hover:bg-gray-800 flex flex-wrap items-center"
+            className="px-5 text-sm rounded-md bg-gray-900 text-white font-semibold py-2 tracking-wider border-gray-900 border hover:bg-gray-800 flex flex-wrap items-center justify-center"
           >
             Sort by Company Name{" "}
             {currentSort === "up" ? (
@@ -159,8 +157,8 @@ const JobComponent = ({ data }) => {
             onClick={handleFilterJobs}
             className={
               filterTick === true
-                ? "text-white bg-gray-900 px-5 rounded-md font-semibold py-2 tracking-wider border hover:bg-gray-800 flex flex-wrap items-center"
-                : "text-black border-gray-900 px-5 rounded-md font-semibold py-2 tracking-wider border hover:bg-gray-800 flex flex-wrap items-center"
+                ? "text-white bg-gray-900 px-5 text-sm rounded-md font-semibold py-2 tracking-wider border hover:bg-gray-800 flex flex-wrap items-center justify-center"
+                : "text-black border-gray-900 px-5 text-sm rounded-md font-semibold py-2 tracking-wider border hover:bg-gray-800 flex flex-wrap items-center justify-center"
             }
           >
             Filter jobs last 7 days
@@ -169,30 +167,39 @@ const JobComponent = ({ data }) => {
         </div>
       </div>
       {!pageLoading && (
-        <div className="grid mt-8 gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-2 transition duration-500 ease-in-out">
+        <div className="mt-8 flex flex-col lg:flex-row lg:flex-wrap justify-space-between transition duration-500 ease-in-out space-y-8 lg:space-y-0">
           {jobsToShow &&
             jobsToShow.map((post) => (
               <div
                 key={post.jobId}
-                className="flex flex-col transition duration-500 ease-in-out"
+                className="flex flex-col transition duration-500 ease-in-out lg:w-1/2 w-full lg:p-4"
               >
-                <div className="bg-white shadow-md rounded-md p-4">
-                  <div className="flex items-center justify-between space-x-4">
-                    <div className="flex flex-col items-center h-full lg:h-24 w-1/6 mb-0">
+                <div className="flex-1 bg-white shadow-md rounded-md p-4">
+                  <div className="flex md:items-center items-start justify-between md:space-x-4">
+                    <div className="flex-col items-center h-24 w-1/6 mb-0 hidden md:flex">
                       {post.companyLogo && (
                         <img
                           src={post.companyLogo}
                           alt="Company logo"
-                          className="w-full object-scale-down lg:h-16 rounded-md"
+                          className="w-full object-scale-down h-full rounded-md"
                         />
                       )}
-                      <div className="w-full flex-none text-sm text-blue-700 font-medium text-center">
-                        {post.companyName}
-                      </div>
                     </div>
                     <div className="flex-auto justify-between py-2 w-3/4">
                       <div className="flex flex-wrap">
-                        <h2 className="flex-auto text-xl font-medium">
+                        <div className="flex-col items-center h-full h-16 w-1/6 mb-1 flex md:hidden">
+                          {post.companyLogo && (
+                            <img
+                              src={post.companyLogo}
+                              alt="Company logo"
+                              className="w-full object-scale-down h-full rounded-md"
+                            />
+                          )}
+                        </div>
+                        <div className="w-full flex-none text-sm text-blue-700 font-medium text-left">
+                          {post.companyName}
+                        </div>
+                        <h2 className="flex-auto xl:text-xl text-lg font-medium">
                           {post.jobTitle}
                         </h2>
                         <div className="w-full flex align-center space-x-2 text-xs text-gray-400">
